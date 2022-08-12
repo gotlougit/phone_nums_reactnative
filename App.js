@@ -1,20 +1,64 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
+import React, { useState } from 'react';
+
+//only popular suffices are supported for now
+let suffices = ["paytm","upi","ybl","apl","okaxis","okbizaxis","okhdfcbank","okicici",
+"oksbi","waaxis","wahdfcbank","waicici","wasbi","freecharge","payzapp"];
+
+let answer = "";
+
+const lookUpVPA = async (vpa) => {
+	return fetch('https://upibankvalidator.com/api/upiValidation?upi=' + vpa, 
+		{method: 'POST', body: JSON.stringify({upi: vpa})})
+		.then((response) => response.json())
+		.then((json) => {
+			if (json.isUpiRegistered) {
+				answer = (json.name);
+			} else {
+				return null;
+			}
+		})
+		.catch((error) => {
+			console.error(error);
+		});
+};
+
+const lookUpNumber = async (number, refresh) => {
+	if (answer) {
+		answer = "";
+	}
+	for (s in suffices) {
+		if (answer) {
+			refresh();
+			break;
+		}
+		await lookUpVPA(number + "@" + suffices[s]);
+	}
+};
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+	const [text, setText] = useState('');
+	const [_, setValue] = useState();
+	const refresh = () => {
+		setValue({});
+	};
+	return (
+		<View style={styles.container}>
+			<Text style={{fontSize: 30}}>Phone Number Lookup</Text>
+			<TextInput autoComplete='tel-national' keyboardType='phone-pad' textContentType='telephoneNumber' maxLength={10} style={{height: 40}} placeholder="Enter phone number" onChangeText={newText => setText(newText)} defaultValue={text} />
+			<Text>{answer}</Text>
+			<Button title='Look It Up' onPress={() => lookUpNumber(text, refresh)}/>
+			<StatusBar style="auto" />
+		</View>
+		);
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+	container: {
+		flex: 1,
+		backgroundColor: '#fff',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
 });
