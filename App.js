@@ -8,15 +8,20 @@ let suffices = ["paytm","upi","ybl","apl","okaxis","okbizaxis","okhdfcbank","oki
 
 let answer = "";
 
-const lookUpVPA = async (vpa) => {
+const lookUpVPA = async (vpa, refresh) => {
+	console.log("making request for vpa: " + vpa);
 	return fetch('https://upibankvalidator.com/api/upiValidation?upi=' + vpa, 
 		{method: 'POST', body: JSON.stringify({upi: vpa})})
 		.then((response) => response.json())
 		.then((json) => {
 			if (json.isUpiRegistered) {
-				answer = (json.name);
+				if (!answer) {
+					answer = (json.name);
+					refresh();
+				}
+				return;
 			} else {
-				return null;
+				throw "not found";
 			}
 		})
 		.catch((error) => {
@@ -28,13 +33,11 @@ const lookUpNumber = async (number, refresh) => {
 	if (answer) {
 		answer = "";
 	}
+	const vpalist = new Array();
 	for (s in suffices) {
-		if (answer) {
-			refresh();
-			break;
-		}
-		await lookUpVPA(number + "@" + suffices[s]);
+		vpalist.push(lookUpVPA(number + "@" + suffices[s], refresh));
 	}
+	Promise.any(vpalist).then(() => console.log(answer));
 };
 
 export default function App() {
