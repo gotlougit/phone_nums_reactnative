@@ -22,6 +22,20 @@ to start a development server, and use the Expo app, available on iOS and Androi
 
 ## Usage
 
+Simply type in the phone number that you want to lookup as a continuous sequence of numbers (no spaces or dashes).
+
+The phone number will be looked up using the popular suffix list. If no result is found, a corresponding message will be printed.
+
+## TODO
+
+- Get an automated build system running to distribute APKs
+
+- Add option to perform a full lookup by using every single UPI VPA possible for a phone number.
+
+- Allow easy saving of successfully looked up phone number to contact list
+
+- Open chat with user of phone number in a phone number-based instant messaging app such as Signal or WhatsApp; this could alternatively be used as a fairly rate-limited phone number lookup as well.
+
 ## Disclaimer
 
 I do NOT own or operate or have anything to do with upibankvalidator.com. While they don't really get a whole lot of info about you specifically other than that you made the request using httpie and what IP address you had at the time, I don't know how they use this information. Use at your own risk, I am NOT liable for any damages.
