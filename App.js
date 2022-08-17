@@ -8,11 +8,13 @@ let suffices = ["paytm","upi","ybl","apl","okaxis","okbizaxis","okhdfcbank","oki
 
 let name = "";
 
+//makes an async request to the external API
 const lookUpVPA = async (vpa) => {
 	return fetch('https://upibankvalidator.com/api/upiValidation?upi=' + vpa, 
 		{method: 'POST', body: JSON.stringify({upi: vpa})})
 		.then((response) => response.json())
 		.then((json) => {
+			console.log(json);
 			if (json.isUpiRegistered) {
 				return json.name;
 			}
@@ -22,6 +24,7 @@ const lookUpVPA = async (vpa) => {
 		});
 };
 
+//go through each possible VPA, push it to an array and then execute all requests
 const lookUpNumber = async (number, refresh) => {
 	if (number.toString().length != 10) {
 		name = "Error! Enter 10 digit Indian phone number!";
@@ -38,8 +41,10 @@ const lookUpNumber = async (number, refresh) => {
 	Promise.all(vpalist).then((returnval) => showName(returnval, refresh));
 };
 
+//go through each request's result and stop if we find a name
 const showName = (resultArr, refresh) => {
 	for (r in resultArr) {
+		console.log(resultArr[r]);
 		if (resultArr[r]) {
 			name = resultArr[r];
 			refresh();
@@ -50,6 +55,7 @@ const showName = (resultArr, refresh) => {
 	refresh();
 };
 
+//simple function to make the answer titlecase
 const titlecase = (string) => {
 	let words = string.split(" ");
 	console.log(words);
@@ -64,6 +70,7 @@ const titlecase = (string) => {
 	return newstr;
 };
 
+//main function
 export default function App() {
 	const [text, setText] = useState('');
 	const [_, setValue] = useState();
@@ -82,6 +89,7 @@ export default function App() {
 		);
 }
 
+//style sheet
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
