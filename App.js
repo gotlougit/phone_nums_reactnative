@@ -3,8 +3,7 @@ import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
 import React, { useState } from 'react';
 
 //only popular suffices are supported for now
-let suffices = ["paytm","upi","ybl","apl","okaxis","okbizaxis","okhdfcbank","okicici",
-"oksbi","waaxis","wahdfcbank","waicici","wasbi","freecharge","payzapp"];
+let suffices = ["paytm","upi","ybl","apl","waaxis","wahdfcbank","waicici","wasbi","freecharge","payzapp"];
 
 let name = "";
 
