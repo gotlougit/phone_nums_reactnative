@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
 import React, { useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
 
 //only popular suffices are supported for now
 let suffices = ["paytm","upi","ybl","apl","waaxis","wahdfcbank","waicici","wasbi","freecharge","payzapp"];
@@ -78,13 +79,15 @@ export default function App() {
 		setValue({});
 	};
 	return (
-		<View style={styles.container}>
-			<Text style={{fontSize: 30}}>Phone Number Lookup</Text>
-			<TextInput autoComplete='tel-national' keyboardType='phone-pad' textContentType='telephoneNumber' maxLength={10} style={{height: 40}} placeholder="Enter phone number" onChangeText={newText => setText(newText)} defaultValue={text} />
-			<Text>{name}</Text>
-			<Button title='Look It Up' onPress={() => lookUpNumber(text, refresh)}/>
-			<StatusBar style="auto" />
-		</View>
+		<NavigationContainer>
+			<View style={styles.container}>
+				<Text style={{fontSize: 30}}>Phone Number Lookup</Text>
+				<TextInput autoComplete='tel-national' keyboardType='phone-pad' textContentType='telephoneNumber' maxLength={10} style={{height: 40}} placeholder="Enter phone number" onChangeText={newText => setText(newText)} defaultValue={text} />
+				<Text>{name}</Text>
+				<Button title='Look It Up' onPress={() => lookUpNumber(text, refresh)}/>
+				<StatusBar style="auto" />
+			</View>
+		</NavigationContainer>
 		);
 }
 
