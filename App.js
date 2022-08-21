@@ -2,14 +2,20 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 //only popular suffices are supported for now
 let suffices = ["paytm","upi","ybl","apl","waaxis","wahdfcbank","waicici","wasbi","freecharge","payzapp"];
 
 let name = "";
+let stats = "";
+const Stack = createNativeStackNavigator();
 
 //makes an async request to the external API
 const lookUpVPA = async (vpa) => {
+	if (name) {
+		throw "Already fulfilled!";
+	}
 	return fetch('https://upibankvalidator.com/api/upiValidation?upi=' + vpa, 
 		{method: 'POST', body: JSON.stringify({upi: vpa})})
 		.then((response) => response.json())
@@ -17,6 +23,8 @@ const lookUpVPA = async (vpa) => {
 			console.log(json);
 			if (json.isUpiRegistered) {
 				return json.name;
+			} else {
+				throw "Not found";
 			}
 		})
 		.catch((error) => {
@@ -24,15 +32,22 @@ const lookUpVPA = async (vpa) => {
 		});
 };
 
+function isNumber(number) {
+	if (number.toString.length != 10) {
+		return false;
+	}
+	return true;
+}
+
 //go through each possible VPA, push it to an array and then execute all requests
 const lookUpNumber = async (number, refresh) => {
-	if (number.toString().length != 10) {
-		name = "Error! Enter 10 digit Indian phone number!";
-		refresh();
-		return;
-	}
 	if (name) {
 		name = "";
+	}
+	if (isNumber(number)) {
+		stats = "Error! Enter 10 digit Indian phone number!";
+		refresh();
+		return;
 	}
 	const vpalist = new Array();
 	for (s in suffices) {
@@ -47,20 +62,27 @@ const showName = (resultArr, refresh) => {
 		console.log(resultArr[r]);
 		if (resultArr[r]) {
 			name = resultArr[r];
+			stats = "Found result!";
 			refresh();
 			return;
 		}
 	}
-	name = "Name not found!";
+	stats = "Name not found!";
 	refresh();
 };
 
 //simple function to make the answer titlecase
 const titlecase = (string) => {
+	if (string == "" || string == undefined) {
+		return;
+	}
 	let words = string.split(" ");
 	console.log(words);
 	let newstr = "";
 	for (w in words) {
+		if (words[w] == "") {
+			continue;
+		}
 		words[w] = words[w].toLowerCase();
 		words[w][0].toUpperCase();
 		newstr += words[w][0].toUpperCase() + words[w].slice(1) + " ";
@@ -70,8 +92,7 @@ const titlecase = (string) => {
 	return newstr;
 };
 
-//main function
-export default function App() {
+function MainScreen() {
 	const [text, setText] = useState('');
 	const [_, setValue] = useState();
 	const refresh = () => {
@@ -79,14 +100,25 @@ export default function App() {
 		setValue({});
 	};
 	return (
+		<View style={styles.container}>
+			<Text style={{fontSize: 30}}>Phone Number Lookup</Text>
+			<TextInput autoComplete='tel-national' keyboardType='phone-pad' textContentType='telephoneNumber' maxLength={10} style={{height: 40}} placeholder="Enter phone number" onChangeText={newText => setText(newText)} defaultValue={text} />
+			<Text>{name}</Text>
+			<Button style={{borderRadius: 25}} title='Look It Up' onPress={() => lookUpNumber(text, refresh)}/>
+			<Text>{stats}</Text>
+			<StatusBar style="auto" />
+		</View>
+		);
+
+}
+
+//main function
+export default function App() {
+	return (
 		<NavigationContainer>
-			<View style={styles.container}>
-				<Text style={{fontSize: 30}}>Phone Number Lookup</Text>
-				<TextInput autoComplete='tel-national' keyboardType='phone-pad' textContentType='telephoneNumber' maxLength={10} style={{height: 40}} placeholder="Enter phone number" onChangeText={newText => setText(newText)} defaultValue={text} />
-				<Text>{name}</Text>
-				<Button title='Look It Up' onPress={() => lookUpNumber(text, refresh)}/>
-				<StatusBar style="auto" />
-			</View>
+			<Stack.Navigator initialRouteName="Home">
+				<Stack.Screen name="Lookup" component={MainScreen} />
+			</Stack.Navigator>
 		</NavigationContainer>
 		);
 }
@@ -98,5 +130,9 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 		alignItems: 'center',
 		justifyContent: 'center',
+	},
+	button: {
+		borderRadius: 25,
+		alignItems: "center",
 	},
 });
