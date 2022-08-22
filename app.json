@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "phonenumberlookup",
+    "name": "Phone Number Lookup",
     "slug": "phonenumberlookup",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -25,7 +25,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.gotlouexpo.phonenumberlookup"
+      "package": "com.gotlou.phonenumberlookup"
     },
     "web": {
       "favicon": "./assets/favicon.png"
