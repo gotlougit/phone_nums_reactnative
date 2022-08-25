@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button, Linking } from 'react-native';
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -33,7 +33,7 @@ const lookUpVPA = async (vpa) => {
 };
 
 function isNumber(number) {
-	if (number.toString.length != 10) {
+	if (number.length != 10) {
 		return false;
 	}
 	return true;
@@ -44,7 +44,7 @@ const lookUpNumber = async (number, refresh) => {
 	if (name) {
 		name = "";
 	}
-	if (isNumber(number)) {
+	if (!isNumber(number)) {
 		stats = "Error! Enter 10 digit Indian phone number!";
 		refresh();
 		return;
@@ -92,6 +92,20 @@ const titlecase = (string) => {
 	return newstr;
 };
 
+function openInWhatsApp(number, refresh) {
+	if (!isNumber(number)) {
+		stats = "Error! Enter 10 digit Indian phone number!";
+		refresh();
+		return;
+	}
+	let url = "whatsapp://send?phone=91" +
+		number;
+        Linking.openURL(url)
+        .catch(() => {
+			console.log("WhatsApp not installed?");
+        });
+};
+
 function MainScreen() {
 	const [text, setText] = useState('');
 	const [_, setValue] = useState();
@@ -104,7 +118,8 @@ function MainScreen() {
 			<Text style={{fontSize: 30}}>Phone Number Lookup</Text>
 			<TextInput autoComplete='tel-national' keyboardType='phone-pad' textContentType='telephoneNumber' maxLength={10} style={{height: 40}} placeholder="Enter phone number" onChangeText={newText => setText(newText)} defaultValue={text} />
 			<Text>{name}</Text>
-			<Button style={{borderRadius: 25}} title='Look It Up' onPress={() => lookUpNumber(text, refresh)}/>
+			<Button style={styles.button} title='Look It Up' onPress={() => lookUpNumber(text, refresh)}/>
+			<Button style={styles.button} title='Open in WhatsApp' onPress={() => openInWhatsApp(text, refresh)}/>
 			<Text>{stats}</Text>
 			<StatusBar style="auto" />
 		</View>
