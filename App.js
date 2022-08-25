@@ -116,7 +116,7 @@ function MainScreen() {
 	return (
 		<View style={styles.container}>
 			<Text style={{fontSize: 30}}>Phone Number Lookup</Text>
-			<TextInput autoComplete='tel-national' keyboardType='phone-pad' textContentType='telephoneNumber' maxLength={10} style={{height: 40}} placeholder="Enter phone number" onChangeText={newText => setText(newText)} defaultValue={text} />
+			<TextInput autoComplete='tel-national' keyboardType='phone-pad' textContentType='telephoneNumber' maxLength={10} style={styles.input} placeholder="Enter phone number" onChangeText={newText => setText(newText)} defaultValue={text} />
 			<Text>{name}</Text>
 			<Button style={styles.button} title='Look It Up' onPress={() => lookUpNumber(text, refresh)}/>
 			<Button style={styles.button} title='Open in WhatsApp' onPress={() => openInWhatsApp(text, refresh)}/>
@@ -149,5 +149,9 @@ const styles = StyleSheet.create({
 	button: {
 		borderRadius: 25,
 		alignItems: "center",
+	},
+	input: {
+		height: 40,
+		textAlign: 'center',
 	},
 });
