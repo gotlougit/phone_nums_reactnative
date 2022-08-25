@@ -115,7 +115,7 @@ function MainScreen() {
 	};
 	return (
 		<View style={styles.container}>
-			<Text style={{fontSize: 30}}>Phone Number Lookup</Text>
+			<Text style={styles.heading}>Phone Number Lookup</Text>
 			<TextInput autoComplete='tel-national' keyboardType='phone-pad' textContentType='telephoneNumber' maxLength={10} style={styles.input} placeholder="Enter phone number" onChangeText={newText => setText(newText)} defaultValue={text} />
 			<Text>{name}</Text>
 			<Button style={styles.button} title='Look It Up' onPress={() => lookUpNumber(text, refresh)}/>
@@ -145,6 +145,9 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 		alignItems: 'center',
 		justifyContent: 'center',
+	},
+	heading: {
+		fontSize: 30,
 	},
 	button: {
 		borderRadius: 25,
