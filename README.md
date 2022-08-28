@@ -2,7 +2,7 @@
 
 This is a React Native project to build an app that allows users to use the UPI system to do a lookup of Indian mobile phone numbers.
 
-For more info, you can read [this blog post](https://gotlou.srht.site/phone-num-lookup.html).
+For more info on how this works, you can read [this blog post](https://gotlou.srht.site/phone-num-lookup.html).
 
 ## Usage
 
@@ -26,6 +26,8 @@ Simply type in the phone number that you want to lookup as a continuous sequence
 
 The phone number will be looked up using the popular suffix list. If no result is found, a corresponding message will be printed.
 
+In the event of no result being found, you can also use the "Open In WhatsApp" button to search for the number as well. As WhatsApp is very popular in India, chances are you already have it installed and so does the other party.
+
 ## TODO
 
 - Get an automated build system running to distribute APKs
@@ -34,7 +36,7 @@ The phone number will be looked up using the popular suffix list. If no result i
 
 - Allow easy saving of successfully looked up phone number to contact list
 
-- Open chat with user of phone number in a phone number-based instant messaging app such as Signal or WhatsApp; this could alternatively be used as a fairly rate-limited phone number lookup as well.
+- Add a dark mode
 
 ## Disclaimer
 
