@@ -115,7 +115,6 @@ function MainScreen() {
 	};
 	return (
 		<View style={styles.container}>
-			<Text style={styles.heading}>Phone Number Lookup</Text>
 			<TextInput autoComplete='tel-national' keyboardType='phone-pad' textContentType='telephoneNumber' maxLength={10} style={styles.input} placeholder="Enter phone number" onChangeText={newText => setText(newText)} defaultValue={text} />
 			<Text>{name}</Text>
 			<Button style={styles.button} title='Look It Up' onPress={() => lookUpNumber(text, refresh)}/>
@@ -132,7 +131,7 @@ export default function App() {
 	return (
 		<NavigationContainer>
 			<Stack.Navigator initialRouteName="Home">
-				<Stack.Screen name="Lookup" component={MainScreen} />
+				<Stack.Screen name="Phone Number Lookup" component={MainScreen} />
 			</Stack.Navigator>
 		</NavigationContainer>
 		);
