@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, Button, Linking } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button, Linking, TouchableOpacity} from 'react-native';
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -117,8 +117,12 @@ function MainScreen() {
 		<View style={styles.container}>
 			<TextInput autoComplete='tel-national' keyboardType='phone-pad' textContentType='telephoneNumber' maxLength={10} style={styles.input} placeholder="Enter phone number" onChangeText={newText => setText(newText)} defaultValue={text} />
 			<Text>{name}</Text>
-			<Button style={styles.button} title='Look It Up' onPress={() => lookUpNumber(text, refresh)}/>
-			<Button style={styles.button} title='Open in WhatsApp' onPress={() => openInWhatsApp(text, refresh)}/>
+			<TouchableOpacity onPress={() => lookUpNumber(text, refresh)}>
+				<Text style={styles.button}>Look It Up</Text>
+			</TouchableOpacity>
+			<TouchableOpacity onPress={() => openInWhatsApp(text, refresh)}>
+				<Text style={styles.button}>Open in WhatsApp</Text>
+			</TouchableOpacity>
 			<Text>{stats}</Text>
 			<StatusBar style="auto" />
 		</View>
@@ -149,10 +153,15 @@ const styles = StyleSheet.create({
 		fontSize: 30,
 	},
 	button: {
-		borderRadius: 25,
-		alignItems: "center",
+		padding: 15,
+		textAlign: 'center',
+		fontSize: 19,
+		borderRadius: 10,
+		backgroundColor: "#55aaff",
+		elevation: 3,
 	},
 	input: {
+		fontSize: 20,
 		height: 40,
 		textAlign: 'center',
 	},
